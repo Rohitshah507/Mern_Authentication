@@ -22,6 +22,8 @@ const createUser = async (data) => {
     email: data.email,
     phoneNumber: data.phoneNumber,
     password: hashedPassword,
+    address: data.address,
+    role: data.role || "Customer",
     isLoggedIn: false,
     resetPasswordCode: null,
     resetCodeExpiry: null,

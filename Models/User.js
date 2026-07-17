@@ -17,7 +17,7 @@ const userSchema = new mongoose.Schema(
           return emailRegex.test(value);
         },
         message: (email) => {
-          return `${email.value}is not a valid email address`;
+          return `${email.value} is not a valid email address`;
         },
       },
     },
@@ -28,7 +28,20 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
+      minlength: [8, "Password must be at least 8 characters long"],
       required: true,
+    },
+    address: {
+      street: String,
+      city: String,
+      state: String,
+      country: String,
+      postalCode: String,
+    },
+    role: {
+      type: String,
+      enum: ["Customer", "Driver", "Admin"],
+      default: "Customer",
     },
     verificationCode: {
       type: Number,
