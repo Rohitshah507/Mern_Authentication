@@ -5,9 +5,13 @@ const partnerDocsSchema = new mongoose.Schema(
     owner: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: User,
+      ref: "User",
     },
     citizenshipUrl: {
+      type: String,
+      required: true,
+    },
+    citizenshipUrlPublicId: {
       type: String,
       required: true,
     },
@@ -15,7 +19,15 @@ const partnerDocsSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    billBookUrlPublicId: {
+      type: String,
+      required: true,
+    },
     licenseUrl: {
+      type: String,
+      required: true,
+    },
+    licenseUrlPublicId: {
       type: String,
       required: true,
     },

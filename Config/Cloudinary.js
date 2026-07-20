@@ -1,37 +1,47 @@
-import { v2 as cloudinary, UploadStream } from "cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 import Config from "./Config.js";
 
-cloudinary.config({
-  cloud_name: Config.cloudinary_cloud_name,
-  api_key: Config.cloudinary_api_key,
-  api_secret: Config.cloudinary_api_secret,
-});
+function connectCloud() {
+  cloudinary.config({
+    cloud_name: Config.cloudinary_cloud_name,
+    api_key: Config.cloudinary_api_key,
+    api_secret: Config.cloudinary_api_secret,
+  });
+}
 
-const uploadCloudinary = async (file) => {
-  if (!file) {
-    return null;
-  }
-
+async function uploadCloudinary(files) {
   try {
-    return new Promise((resolve, reject) => {
-      const uploadStream = cloudinary.uploader.upload_stream(
-        {
-          resource_type: "auto",
-        },
-        (error, data) => {
-          if (error) {
-            reject(error);
-          } else {
-            resolve(data.secure_url ?? null);
-          }
-        },
-      );
-      uploadStream.end(file.buffer);
-    });
+    const uploadedResult = [];
+
+    for (const file of files) {
+      const result = await new Promise((resolve, reject) => {
+        cloudinary.uploader
+          .upload_stream(
+            {
+              resource_type: "auto",
+            },
+            (error, data) => {
+              if (error) return reject(error);
+              resolve(data);
+            },
+          )
+          .end(file.buffer);
+      });
+
+      uploadedResult.push(result);
+    }
+
+    return uploadedResult;
   } catch (error) {
-    console.log(error);
-    return null;
+    res.status(500).json({
+      success: false,
+      message: `Cloudinary failed ${error.message}`,
+    });
   }
+}
+
+const deleteCloudinary = async (publicId) => {
+  return await cloudinary.uploader.destroy(publicId);
 };
 
-export { uploadCloudinary };
+export { connectCloud, uploadCloudinary, deleteCloudinary };
