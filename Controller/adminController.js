@@ -19,4 +19,22 @@ const getAllPartnerDocs = async (req, res) => {
   }
 };
 
-export { getAllPartnerDocs };
+const getAllVehicles = async (req, res) => {
+  try {
+    const vehicles = await Vehicle.find().populate(
+      "owner",
+      "name email phoneNumber",
+    );
+    return res.status(201).json({
+      success: true,
+      message: "All Vehicles",
+    });
+  } catch (error) {
+    res.status(error.statusCode || 500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+export { getAllPartnerDocs, getAllVehicles };

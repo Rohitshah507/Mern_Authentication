@@ -1,4 +1,5 @@
 import User from "../Models/User.js";
+import Vehicle from "../Models/Vehicle.js";
 import {
   vehicleService,
   getVehicleService,
@@ -53,5 +54,6 @@ const getVehicles = async (req, res) => {
     });
   }
 };
+
 
 export { vehicleController, getVehicles };

@@ -20,9 +20,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
-app.use("/partner/", vehicleRoute);
-app.use("/partner/", partnerDocsRoutes);
-app.use("/admin/", adminRoutes);
+app.use("/partner", vehicleRoute);
+app.use("/partner", partnerDocsRoutes);
+app.use("/admin", adminRoutes);
 
 const startServer = async () => {
   try {
